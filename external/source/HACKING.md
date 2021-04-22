@@ -46,6 +46,10 @@ The following should work in a fresh Git clone:
       sudo dnf builddep --spec $TEMPFILE && \
       rm $TEMPFILE
 
+For running the browser unit tests, the following dependencies are required:
+
+    $ sudo dnf chromium-headless dbus-daemon
+
 For running integration tests, the following dependencies are required:
 
     $ sudo dnf install curl expect xz rpm-build chromium-headless \
@@ -78,14 +82,6 @@ Then run
 to build everything.  Cockpit has a single non-recursive Makefile.  You can
 only run `make` from the top-level and it will always rebuild the whole
 project.
-
-When building from git, you can optionally set the `NO_NPM` environment
-variable to `1` to prevent `autogen.sh` from invoking `npm`.  As a result,
-there will be no `node_modules` directory created.  In case this directory is
-missing, the build will avoid building the parts of cockpit which are
-dependent on node, which can be useful for working on the C parts.  You can
-also use `NO_NPM=0` or `NO_NPM=1` as an environment variable or flag to `make`
-to force building (or force not building) the node-related parts.
 
 You can run unit tests of the current checkout:
 
@@ -244,8 +240,7 @@ In a Fedora/RHEL build environment you can build binary RPMs with
 
 In a Debian/Ubuntu build environment you can build debs with
 
-    cp -r tools/debian .
-    dpkg-buildpackage -us -uc -b
+    tools/make-debs --quick
 
 ## Contributing a change
 
